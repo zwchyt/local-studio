@@ -1,0 +1,90 @@
+# Environment files
+.env
+.env.*
+*.local
+!.env.example
+
+.factory
+
+# Per-project agent comments (created when the user adds comments via the
+# Local Studio agent surface). Project-local, not shared.
+.local-studio/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.coverage
+.ruff_cache/
+
+# Data directories
+data/
+*.db
+*.sqlite
+# Logs
+*.log
+/logs/
+
+# Recipes (user-specific)
+/recipes/
+
+# Node.js
+node_modules/
+.next/
+.turbo/
+bun.lock
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*~
+
+# Xcode user data
+**/xcuserdata/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+*.tar.gz
+*.zip
+.tmp/
+frontend/playwright-report/
+frontend/test-results/
+frontend/test-output/
+controller/test-output/
+reports/
+
+# Local proofs / scratch
+proof-*.png
+proof-*.md
+proof-snapshot-*.md
+work/
+
+# Local config
+.claude/
+.opencode/
+.osgrep/
+opencode.json
+
+# MCP servers config (contains API keys)
+data/mcp_servers.json
+
+# Local scripts (user-specific)
+scripts/*.local.sh
+.worktree/
+.pi/
+.ralph/
+.trace-harness*/
+
+# Sensitive data - do not commit specific IPs or domains
+# Use environment variables or config files instead
+refactory/

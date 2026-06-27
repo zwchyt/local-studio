@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  controller:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Install dependencies
+        working-directory: ./controller
+        run: bun install
+      - name: Type check
+        working-directory: ./controller
+        run: bun run typecheck
+      - name: Lint
+        working-directory: ./controller
+        run: bun run lint
+      - name: Cleanup checks
+        working-directory: ./controller
+        run: bun run check
+      - name: Integration tests
+        working-directory: ./controller
+        run: bun run test:integration
+
+  cli:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Install dependencies
+        working-directory: ./cli
+        run: bun install
+      - name: Type check
+        working-directory: ./cli
+        run: bun run typecheck
+      - name: Lint
+        working-directory: ./cli
+        run: bun run lint
+      - name: Cleanup checks
+        working-directory: ./cli
+        run: bun run check
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm ci --legacy-peer-deps
+      - name: Static checks
+        working-directory: ./frontend
+        run: npm run check:static
+      - name: Cleanup checks
+        working-directory: ./frontend
+        run: npm run check:cleanup
+      - name: E2E tests
+        working-directory: ./frontend
+        run: npm run test:e2e

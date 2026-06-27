@@ -1,0 +1,92 @@
+appId: org.local.studio.desktop
+productName: Local Studio
+asar: true
+
+# Postflight guard: assert the packed app actually contains the embedded Next
+# standalone server before signing. electron-builder can silently skip the
+# extraResources copy of .next/standalone (logging "file source doesn't exist")
+# yet still exit 0 — afterPack runs before signing, so throwing aborts the build
+# instead of shipping a broken signed bundle. See the hook for details.
+afterPack: ./scripts/electron-builder-after-pack.mjs
+
+asarUnpack:
+  - "node_modules/@lydell/**/*.node"
+  - "node_modules/@lydell/**/spawn-helper"
+
+files:
+  - desktop/dist/**
+  - package.json
+  - node_modules/@lydell/node-pty/**
+  - node_modules/@lydell/node-pty-${platform}-${arch}/**
+
+extraResources:
+  - from: .next/standalone
+    to: app/frontend/.next/standalone
+    filter:
+      - "**/*"
+      # Never bundle runtime state into the shipped app — standalone/**/data can
+      # contain api-settings.json (live API key) and pi-agent/auth.json.
+      - "!**/data/**"
+      - "!**/dist-desktop/**"
+      - "!**/*.log"
+  - from: .next/static
+    to: app/frontend/.next/standalone/.next/static
+    filter:
+      - "**/*"
+  - from: .next/static
+    to: app/frontend/.next/standalone/frontend/.next/static
+    filter:
+      - "**/*"
+  - from: public
+    to: app/frontend/.next/standalone/public
+    filter:
+      - "**/*"
+  - from: public
+    to: app/frontend/.next/standalone/frontend/public
+    filter:
+      - "**/*"
+  - from: desktop/resources/pi-extensions
+    to: desktop/resources/pi-extensions
+    filter:
+      - "**/*"
+  - from: desktop/resources/mcp
+    to: desktop/resources/mcp
+    filter:
+      - "**/*"
+  - from: desktop/resources/skills
+    to: desktop/resources/skills
+    filter:
+      - "**/*"
+
+directories:
+  output: dist-desktop
+  buildResources: desktop/resources
+
+mac:
+  icon: desktop/resources/icon.icns
+  category: public.app-category.developer-tools
+  # Sign with the real Apple Developer ID Application certificate so Gatekeeper
+  # accepts the bundle without `-609` errors and the app can be distributed.
+  # The matching private key must be present in the login keychain.
+  identity: "sherif cherfa (TZ447KHNZL)"
+  target:
+    - target: dmg
+      arch:
+        - arm64
+    - target: zip
+      arch:
+        - arm64
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  entitlements: desktop/resources/entitlements.mac.plist
+  entitlementsInherit: desktop/resources/entitlements.mac.plist
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+
+linux:
+  target:
+    - AppImage

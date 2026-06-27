@@ -1,0 +1,688 @@
+/* Message content */
+.message-content {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  color: var(--fg) !important;
+}
+
+.message-content p,
+.message-content li,
+.message-content ul,
+.message-content ol,
+.message-content h1,
+.message-content h2,
+.message-content h3,
+.message-content h4,
+.message-content h5,
+.message-content h6,
+.message-content span:not([class*="hljs"]),
+.message-content strong,
+.message-content em,
+.message-content blockquote,
+.message-content td,
+.message-content th,
+.message-content div:not([class]) {
+  color: var(--fg) !important;
+}
+
+.message-content pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.message-content code {
+  word-break: break-word;
+}
+
+.message-content pre code {
+  word-break: normal;
+}
+
+/* Chat markdown */
+:root {
+  /* Codex desktop, exact: system UI at 14px with relaxed 1.625 leading for
+     chat prose; 12px monospace for code. Weight 400 — calm, document-like. */
+  --codex-chat-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --codex-chat-mono-font-family:
+    ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --codex-chat-font-size: 14px;
+  --codex-chat-line-height: 1.625;
+  --codex-chat-code-font-size: 12px;
+  --codex-chat-font-weight: 400;
+}
+
+.chat-markdown {
+  font-family: var(--codex-chat-font-family);
+  font-size: var(--codex-chat-font-size);
+  line-height: var(--codex-chat-line-height);
+  font-weight: var(--codex-chat-font-weight);
+  /* Codex renders message body at foreground 85% */
+  color: color-mix(in srgb, var(--fg) 85%, transparent);
+  letter-spacing: 0;
+}
+
+.chat-scroll-pad {
+  padding-bottom: 0;
+}
+
+.agent-thread-shell {
+  width: min(100%, var(--composer-w));
+}
+
+@media (max-width: 768px) {
+  .chat-scroll-pad {
+    padding-bottom: calc(var(--chat-composer-height, 128px) + env(safe-area-inset-bottom, 0px));
+  }
+
+  .chat-markdown {
+    font-size: var(--codex-chat-font-size);
+    line-height: var(--codex-chat-line-height);
+  }
+
+  .chat-markdown p {
+    margin-bottom: 0.7rem;
+  }
+  .chat-markdown ul,
+  .chat-markdown ol {
+    margin-bottom: 0.7rem;
+    padding-left: 0.9rem;
+  }
+  .chat-markdown h1 {
+    font-size: 1.15rem;
+    margin: 0.8rem 0 0.5rem;
+  }
+  .chat-markdown h2 {
+    font-size: 1.05rem;
+    margin: 0.7rem 0 0.4rem;
+  }
+}
+
+/* Codex markdown rhythm: 12px between blocks (my-3), tight lists (pl-4). */
+.chat-markdown p {
+  margin-bottom: 12px;
+}
+
+.chat-markdown p:last-child {
+  margin-bottom: 0;
+}
+
+.chat-markdown ul,
+.chat-markdown ol {
+  margin-bottom: 12px;
+  padding-left: 16px;
+}
+
+.chat-markdown li {
+  margin-bottom: 3px;
+}
+
+.chat-markdown h1,
+.chat-markdown h2,
+.chat-markdown h3,
+.chat-markdown h4 {
+  font-weight: 600;
+  color: var(--fg);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.chat-markdown h1 {
+  font-size: 18px;
+  margin: 1.1rem 0 0.5rem;
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.chat-markdown h2 {
+  font-size: 16px;
+  margin: 1rem 0 0.45rem;
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.chat-markdown h3 {
+  font-size: 14px;
+  margin: 0.85rem 0 0.35rem;
+}
+
+.chat-markdown h4 {
+  font-size: 13px;
+  margin: 0.7rem 0 0.3rem;
+  color: var(--fg);
+}
+
+.chat-markdown h1:first-child,
+.chat-markdown h2:first-child,
+.chat-markdown h3:first-child,
+.chat-markdown h4:first-child {
+  margin-top: 0;
+}
+
+.chat-markdown hr {
+  margin: 1rem 0;
+  border-color: var(--border);
+}
+
+.chat-markdown strong {
+  font-weight: 600;
+  color: color-mix(in srgb, var(--fg) 94%, transparent);
+}
+
+/* Reference chips — file paths and external links render as compact, themed
+   chips with a leading icon so they read as actionable inside prose. Scoped
+   with two classes so they outrank the bare `.chat-markdown a` reset. */
+.chat-markdown a {
+  color: var(--link, #6ea8fe);
+  text-decoration: none;
+}
+
+.chat-markdown .chat-ref-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28em;
+  max-width: 100%;
+  vertical-align: baseline;
+  margin: 0 1px;
+  padding: 0.5px 6px 0.5px 5px;
+  border-radius: 6px;
+  font-family:
+    var(--codex-chat-mono-font-family), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  line-height: 17px;
+  font-weight: 450;
+  color: var(--link, #6ea8fe);
+  background: color-mix(in srgb, var(--link, #6ea8fe) 11%, transparent);
+  border: 1px solid color-mix(in srgb, var(--link, #6ea8fe) 22%, transparent);
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background 0.13s ease,
+    border-color 0.13s ease;
+}
+
+.chat-markdown .chat-ref-chip[role="group"] {
+  cursor: default;
+}
+
+.chat-markdown .chat-ref-chip-open,
+.chat-markdown .chat-ref-chip-copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  color: inherit;
+}
+
+.chat-markdown .chat-ref-chip-open {
+  cursor: pointer;
+}
+
+.chat-markdown .chat-ref-chip-copy {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  opacity: 0.68;
+  cursor: copy;
+}
+
+.chat-markdown .chat-ref-chip-copy:hover {
+  opacity: 1;
+  background: color-mix(in srgb, var(--link, #6ea8fe) 16%, transparent);
+}
+
+.chat-markdown .chat-ref-chip:hover {
+  background: color-mix(in srgb, var(--link, #6ea8fe) 18%, transparent);
+  border-color: color-mix(in srgb, var(--link, #6ea8fe) 36%, transparent);
+}
+
+.chat-markdown .chat-ref-chip-icon {
+  flex-shrink: 0;
+  width: 11px;
+  height: 11px;
+  opacity: 0.85;
+}
+
+.chat-markdown .chat-ref-chip-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  user-select: text;
+}
+
+/* Tables — rounded, rule-separated (no grid lines), zebra-striped body.
+   `separate` borders + spacing:0 so the border-radius actually clips. The
+   wrapper handles horizontal scroll for wide tables. */
+.chat-markdown table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 0.5rem 0;
+  font-size: 12.5px;
+  line-height: 1.45;
+  background: color-mix(in srgb, var(--surface) 35%, transparent);
+}
+
+.chat-markdown thead th {
+  background: color-mix(in srgb, var(--fg) 5%, transparent);
+  border-bottom: 1px solid var(--border);
+}
+
+.chat-markdown th {
+  text-align: left;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.42rem 0.72rem;
+  color: color-mix(in srgb, var(--fg) 55%, transparent);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.chat-markdown td {
+  padding: 0.4rem 0.72rem;
+  color: color-mix(in srgb, var(--fg) 84%, transparent);
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  border-top: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+
+.chat-markdown tbody tr:first-child td {
+  border-top: 0;
+}
+
+.chat-markdown tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--fg) 3%, transparent);
+}
+
+.chat-markdown img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  margin: 0.75rem 0;
+}
+
+/* Inline code, Codex-exact: foreground@10% pill, 6px×2px padding, no border. */
+.chat-markdown :not(pre) > code {
+  padding: 2px 6px;
+  border-radius: var(--rad-sm);
+  background: color-mix(in srgb, var(--fg) 10%, transparent);
+  color: color-mix(in srgb, var(--fg) 88%, transparent);
+  font-family:
+    var(--codex-chat-mono-font-family), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  font-size: var(--codex-chat-code-font-size);
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.chat-markdown .assistant-code-block pre {
+  scrollbar-color: color-mix(in srgb, var(--fg) 18%, transparent) transparent;
+}
+
+.agent-chat-scroller {
+  scrollbar-width: auto;
+  scrollbar-color: color-mix(in srgb, var(--fg) 34%, transparent)
+    color-mix(in srgb, var(--bg) 82%, var(--border));
+}
+
+.agent-chat-scroller::-webkit-scrollbar {
+  width: 16px;
+}
+
+.agent-chat-scroller::-webkit-scrollbar-track {
+  background: color-mix(in srgb, var(--bg) 82%, var(--border));
+}
+
+.agent-chat-scroller::-webkit-scrollbar-thumb {
+  min-height: 56px;
+  border: 3px solid color-mix(in srgb, var(--bg) 82%, var(--border));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--fg) 34%, transparent);
+  background-clip: padding-box;
+}
+
+.agent-chat-scroller::-webkit-scrollbar-thumb:hover,
+.agent-chat-scroller::-webkit-scrollbar-thumb:active {
+  background: color-mix(in srgb, var(--accent) 60%, var(--fg));
+  background-clip: padding-box;
+}
+
+.prompt-minimap {
+  position: absolute;
+  top: 50%;
+  left: max(1.25rem, calc((100% - var(--composer-w)) / 2 - 5.75rem));
+  z-index: 12;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 10px;
+  max-height: 60vh;
+  width: 4.75rem;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.prompt-minimap-marker {
+  position: relative;
+  left: 0;
+  display: flex;
+  align-items: center;
+  width: 3rem;
+  height: 1rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.prompt-minimap-line {
+  display: block;
+  width: 0.82rem;
+  height: 2px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--fg) 26%, transparent);
+  transition:
+    width 0.14s ease,
+    background-color 0.14s ease,
+    box-shadow 0.14s ease;
+}
+
+.prompt-minimap-marker:hover .prompt-minimap-line,
+.prompt-minimap-marker:focus-visible .prompt-minimap-line {
+  width: 2rem;
+  background: color-mix(in srgb, var(--fg) 88%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--agent-bg) 72%, transparent);
+}
+
+.prompt-minimap-card {
+  position: absolute;
+  left: 2.55rem;
+  top: 50%;
+  display: grid;
+  width: min(26rem, calc(100vw - 8rem));
+  gap: 0.28rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+  border-radius: 0.72rem;
+  background: color-mix(in srgb, var(--surface) 94%, var(--agent-bg));
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.32);
+  color: var(--fg);
+  pointer-events: none;
+  text-align: left;
+  transform: translateY(-50%);
+}
+
+.prompt-minimap-card-text {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  font-size: 13px;
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--fg) 90%, transparent);
+}
+
+.prompt-minimap-card-time {
+  font-size: 11px;
+  line-height: 1.2;
+  color: color-mix(in srgb, var(--fg) 48%, transparent);
+}
+
+@media (max-width: 980px) {
+  .prompt-minimap {
+    display: none;
+  }
+}
+
+.agent-activity-preview {
+  position: relative;
+}
+
+.agent-activity-preview-running::after {
+  content: attr(data-preview);
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+  color: transparent;
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 48%,
+    color-mix(in srgb, var(--fg) 82%, transparent) 50%,
+    transparent 52%,
+    transparent 100%
+  );
+  background-size: 500% 100%;
+  background-position: 100% 0;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: agent-activity-preview-sweep 1.5s linear infinite;
+}
+
+@keyframes agent-activity-preview-sweep {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-activity-preview-running::after {
+    animation: none;
+  }
+}
+
+.chat-markdown .assistant-code-block code {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: #fff;
+  white-space: pre;
+  word-break: normal;
+}
+
+.chat-markdown .assistant-code-block .hljs {
+  background: transparent;
+  color: #fff;
+}
+
+.chat-markdown .assistant-code-block .hljs-keyword,
+.chat-markdown .assistant-code-block .hljs-selector-tag,
+.chat-markdown .assistant-code-block .hljs-literal,
+.chat-markdown .assistant-code-block .hljs-section,
+.chat-markdown .assistant-code-block .hljs-link {
+  color: #2e95d3;
+}
+
+.chat-markdown .assistant-code-block .hljs-string,
+.chat-markdown .assistant-code-block .hljs-name,
+.chat-markdown .assistant-code-block .hljs-type,
+.chat-markdown .assistant-code-block .hljs-symbol,
+.chat-markdown .assistant-code-block .hljs-bullet,
+.chat-markdown .assistant-code-block .hljs-addition {
+  color: #00a67d;
+}
+
+.chat-markdown .assistant-code-block .hljs-title {
+  color: #f22c3d;
+}
+
+.chat-markdown .assistant-code-block .hljs-attr,
+.chat-markdown .assistant-code-block .hljs-attribute,
+.chat-markdown .assistant-code-block .hljs-variable,
+.chat-markdown .assistant-code-block .hljs-template-variable,
+.chat-markdown .assistant-code-block .hljs-selector-class,
+.chat-markdown .assistant-code-block .hljs-selector-attr,
+.chat-markdown .assistant-code-block .hljs-selector-pseudo,
+.chat-markdown .assistant-code-block .hljs-number,
+.chat-markdown .assistant-code-block .hljs-built_in,
+.chat-markdown .assistant-code-block .hljs-builtin-name {
+  color: #df3079;
+}
+
+.chat-markdown .assistant-code-block .hljs-comment,
+.chat-markdown .assistant-code-block .hljs-quote,
+.chat-markdown .assistant-code-block .hljs-meta {
+  color: #ffffff80;
+}
+
+.chat-markdown .assistant-code-block .hljs-deletion {
+  color: #ff7373;
+}
+
+.chat-markdown .assistant-code-block .hljs-emphasis {
+  font-style: italic;
+}
+
+.chat-markdown .assistant-code-block .hljs-strong {
+  font-weight: 600;
+}
+
+.agent-composer-shell {
+  container-type: inline-size;
+  width: min(100%, var(--composer-w));
+}
+
+.agent-composer-meta {
+  container-type: inline-size;
+  width: min(100%, var(--composer-w));
+}
+
+.agent-composer-project {
+  max-width: min(42%, 18rem);
+}
+
+.agent-composer-branch {
+  max-width: 12rem;
+}
+
+.agent-composer-git-summary {
+  max-width: 13rem;
+}
+
+.agent-composer-tokens {
+  white-space: nowrap;
+}
+
+@container (max-width: 560px) {
+  .agent-composer-actions-row {
+    flex-wrap: wrap;
+  }
+}
+
+@container (max-width: 520px) {
+  .agent-composer-meta-main {
+    flex-basis: 100%;
+  }
+
+  .agent-composer-project {
+    max-width: 38%;
+  }
+
+  .agent-composer-branch {
+    max-width: 9rem;
+  }
+
+  .agent-composer-git-summary {
+    max-width: 9rem;
+  }
+
+  .agent-composer-tokens {
+    margin-left: auto;
+    max-width: 100%;
+  }
+}
+
+.chat-markdown blockquote {
+  border-left: 2px solid var(--separator);
+  padding-left: 1rem;
+  margin: 12px 0;
+  color: color-mix(in srgb, var(--fg) 65%, transparent);
+}
+
+/* Codex "Thinking" shimmer — a stepped (not smooth) gradient sweep clipped to
+   the label text; the cadenced steps() timing is what makes it read as Codex. */
+.codex-shimmer-text {
+  color: transparent;
+  background-image: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--fg) 38%, transparent) 0%,
+    color-mix(in srgb, var(--fg) 38%, transparent) 35%,
+    color-mix(in srgb, var(--fg) 88%, transparent) 50%,
+    color-mix(in srgb, var(--fg) 38%, transparent) 65%,
+    color-mix(in srgb, var(--fg) 38%, transparent) 100%
+  );
+  background-size: 250% 100%;
+  background-position: 100% 0;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: codex-shimmer-sweep 1.2s steps(48, end) infinite;
+}
+
+@keyframes codex-shimmer-sweep {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .codex-shimmer-text {
+    animation: none;
+    background: none;
+    color: var(--dim);
+  }
+}
+
+/* Typing dots */
+.typing-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 20px;
+}
+
+.typing-dots span {
+  width: 4px;
+  height: 4px;
+  background: var(--dim);
+  border-radius: 50%;
+  animation: typing-bounce 1.4s infinite ease-in-out both;
+}
+
+.typing-dots span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+.typing-dots span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+.typing-dots span:nth-child(3) {
+  animation-delay: 0s;
+}
+
+@keyframes typing-bounce {
+  0%,
+  80%,
+  100% {
+    transform: scale(0.5);
+    opacity: 0.35;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+}
